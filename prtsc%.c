@@ -1,7 +1,7 @@
 #include "main.h"
 int _printf(const char * const format, ...)
 {
-	int i, n = strlen(format);
+	int i,j, n = strlen(format);
 
 	va_list printt;
 
@@ -19,8 +19,12 @@ int _printf(const char * const format, ...)
 			{
 				char *x = va_arg(printt, char *);
 
-					write(1 , &x , sizeof(char *));
-					i++;
+                    while(*x != '\0')
+                    {
+                        write(1 , x , 1);
+                        x++;
+                    }
+                    i++;
 			}
 			else if (((format[i] == '%') & (format[i + 1] == '%')))
 			{
@@ -34,4 +38,3 @@ int _printf(const char * const format, ...)
 	}
 	return (0);
 }
-
