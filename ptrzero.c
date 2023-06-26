@@ -1,7 +1,7 @@
 #include "main.h"
 int _printf(const char * const format, ...)
 {
-	int i,j, n = strlen(format);
+	int i, n = strlen(format);
 
 	va_list printt;
 
