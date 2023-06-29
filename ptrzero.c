@@ -1,5 +1,4 @@
 #include "main.h" 
-
 int _printf(const char *format, ...)
 {
     int count = 0;
@@ -11,7 +10,6 @@ int _printf(const char *format, ...)
         if (*format == '%')
         {
             format++;
-
             switch (*format)
             {
                 case 'c':
@@ -25,7 +23,8 @@ int _printf(const char *format, ...)
                 case 's':
                 {
                     const char *str = va_arg(args, const char*);
-                    count += puts(str);
+                    fputs(str, stdout);
+                    count += strlen(str);
                     break;
                 }
 
@@ -33,9 +32,8 @@ int _printf(const char *format, ...)
                 case 'i':
                 {
                     int num = va_arg(args, int);
-                    char numStr[12];
-                    sprintf(numStr, "%d", num);
-                    count += puts(numStr);
+                    printf("%d", num);
+                    count += snprintf(NULL, 0, "%d", num);
                     break;
                 }
 
