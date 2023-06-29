@@ -1,6 +1,8 @@
 #include "main.h"
 int _printf(const char * const format, ...)
-{
+{	
+	long unsigned int j;
+
 	int i, n = strlen(format);
 
 	va_list printt;
@@ -12,28 +14,27 @@ int _printf(const char * const format, ...)
 			{
 				unsigned char x = (unsigned char) va_arg(printt, int);
 
-						write(1,&x,sizeof(char));
+						_putchar(x);
 					i++;
 			}
             else if (((format[i] == '%') & (format[i + 1] == 's')))
 			{
 				char *x = va_arg(printt, char *);
-
-                    while(*x != '\0')
-                    {
-                        write(1 , x , 1);
-                        x++;
-                    }
-                    i++;
+                for (j = 0 ;j < (strlen(x)*100) ;j++)
+                {
+                       _putchar(*x++);
+                }
+             
+                i++;
 			}
 			else if (((format[i] == '%') & (format[i + 1] == '%')))
 			{
-					write(1 , &format[i], sizeof(char));
+					_putchar(format[i]);
                     i++;
 			}
 			else
 			{
-				write(1 , &format[i] , 1);
+				_putchar(format[i]);
 			}
 	}
 	return (0);
