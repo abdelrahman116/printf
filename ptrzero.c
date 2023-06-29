@@ -1,41 +1,41 @@
 #include "main.h"
 int _printf(const char * const format, ...)
-{	
-	long unsigned int j;
-
-	int i, n = strlen(format);
+{
+	unsigned int i = 0;
 
 	va_list printt;
 
 	va_start(printt, format);
-	for (i = 0; i < n; i++)
-	{
-		    if (((format[i] == '%') & (format[i + 1] == 'c')))
-			{
-				unsigned char x = (unsigned char) va_arg(printt, int);
-
-						_putchar(x);
-					i++;
-			}
-            else if (((format[i] == '%') & (format[i + 1] == 's')))
-			{
-				char *x = va_arg(printt, char *);
-                for (j = 0 ;j < (strlen(x)*100) ;j++)
+  
+   for ( i = 0 ; i < strlen(format) ; i++)
+    {
+      if (format[i] == '%')
+            {
+                switch (format[i+1])
                 {
-                       _putchar(*x++);
+                case 'c':
+                  {char x = va_arg(printt, int);
+                    _putchar(x);
+                        i++;
+                    break;}
+                case 's':
+                  {char *x = va_arg(printt, char *);
+                    while(*x)
+						{_putchar(*x++);}
+                        i++;
+                    break;}
+                case '%':
+                  {
+                        _putchar('%');
+                        i++;
+                    break;}        
                 }
-             
-                i++;
-			}
-			else if (((format[i] == '%') & (format[i + 1] == '%')))
-			{
-					_putchar(format[i]);
-                    i++;
-			}
-			else
-			{
-				_putchar(format[i]);
-			}
-	}
-	return (0);
+            } 
+        else 
+        {
+            _putchar(format[i]);
+        }
+        }
+    va_end (printt);
+    return (0);
 }
