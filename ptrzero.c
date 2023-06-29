@@ -1,9 +1,11 @@
 #include "main.h" 
+
 int _printf(const char *format, ...)
-{   
+{
+    va_list args;
+    va_start(args, format);
+
     int count = 0;
-    va_list _printt;
-    va_start(_printt, format);
 
     while (*format != '\0')
     {
@@ -11,11 +13,12 @@ int _printf(const char *format, ...)
         {
             format++;
 
+
             switch (*format)
             {
                 case 'c':
                 {
-                    int ch = va_arg(_printt, int);
+                    int ch = va_arg(args, int);
                     putchar(ch);
                     count++;
                     break;
@@ -23,18 +26,30 @@ int _printf(const char *format, ...)
 
                 case 's':
                 {
-                    const char *str = va_arg(_printt, const char*);
+                    const char *str = va_arg(args, const char*);
                     fputs(str, stdout);
                     count += strlen(str);
                     break;
                 }
 
+                case 'd':
+                case 'i':
+                {
+
+                    int num = va_arg(args, int);
+                    printf("%d", num);
+                    count += snprintf(NULL, 0, "%d", num);
+                    break;
+                }
+
                 case '%':
                 {
+
                     putchar('%');
                     count++;
                     break;
                 }
+
             }
         }
         else
@@ -45,7 +60,8 @@ int _printf(const char *format, ...)
 
         format++;
     }
-    va_end(_printt);
-    return (count);
-}
 
+    va_end(args);
+
+    return count;
+}
