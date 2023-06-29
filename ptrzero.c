@@ -1,41 +1,51 @@
-#include "main.h"
-int _printf(const char * const format, ...)
-{
-	unsigned int i = 0;
+#include "main.h" 
+int _printf(const char *format, ...)
+{   
+    int count = 0;
+    va_list _printt;
+    va_start(_printt, format);
 
-	va_list printt;
-
-	va_start(printt, format);
-  
-   for ( i = 0 ; i < strlen(format) ; i++)
+    while (*format != '\0')
     {
-      if (format[i] == '%')
-            {
-                switch (format[i+1])
-                {
-                case 'c':
-                  {char x = va_arg(printt, int);
-                    _putchar(x);
-                        i++;
-                    break;}
-                case 's':
-                  {char *x = va_arg(printt, char *);
-                    while(*x)
-						{_putchar(*x++);}
-                        i++;
-                    break;}
-                case '%':
-                  {
-                        _putchar('%');
-                        i++;
-                    break;}        
-                }
-            } 
-        else 
+        if (*format == '%')
         {
-            _putchar(format[i]);
+            format++;
+
+            switch (*format)
+            {
+                case 'c':
+                {
+                    int ch = va_arg(_printt, int);
+                    putchar(ch);
+                    count++;
+                    break;
+                }
+
+                case 's':
+                {
+                    const char *str = va_arg(_printt, const char*);
+                    fputs(str, stdout);
+                    count += strlen(str);
+                    break;
+                }
+
+                case '%':
+                {
+                    putchar('%');
+                    count++;
+                    break;
+                }
+            }
         }
+        else
+        {
+            putchar(*format);
+            count++;
         }
-    va_end (printt);
-    return (0);
+
+        format++;
+    }
+    va_end(_printt);
+    return (count);
 }
+
