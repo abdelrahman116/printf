@@ -36,6 +36,13 @@ int _printf(const char *format, ...)
                     count += snprintf(NULL, 0, "%d", num);
                     break;
                 }
+		case 'b':
+		{
+		unsigned int num = va_arg(args, unsigned int);
+		print_binary(num);
+		count += sizeof(num) * 8;
+			break;
+		}
 
                 case '%':
                 {
