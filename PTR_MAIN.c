@@ -50,34 +50,33 @@ int _printf(const char *format, ...)
 					break;
 				}
 
-				case 'u':
+								case 'u':
 				{
 					unsigned int num = va_arg(args, unsigned int);
-					count += print_unsigned_decimal(num, buffer, &buffer_count);
+					convert(num, 10, buffer, &buffer_count, 0);
 					break;
 				}
 
 				case 'o':
 				{
 					unsigned int num = va_arg(args, unsigned int);
-					count += print_octal(num, buffer, &buffer_count);
+					convert(num, 8, buffer, &buffer_count, 0);
 					break;
 				}
 
 				case 'x':
 				{
 					unsigned int num = va_arg(args, unsigned int);
-					count += print_hexadecimal(num, buffer, &buffer_count, 0);
+					convert(num, 16, buffer, &buffer_count, 0);
 					break;
 				}
 
 				case 'X':
 				{
 					unsigned int num = va_arg(args, unsigned int);
-					count += print_hexadecimal(num, buffer, &buffer_count, 1);
+					convert(num, 16, buffer, &buffer_count, 1);
 					break;
 				}
-
 				case 'b':
 				{
 					unsigned int num = va_arg(args, unsigned int);
@@ -95,6 +94,9 @@ int _printf(const char *format, ...)
 				}
 
 				default:
+                buffer[buffer_count] = *format;
+					buffer_count++;
+					count++;
 					break;
 			}
 		}
