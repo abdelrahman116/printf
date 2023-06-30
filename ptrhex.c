@@ -1,16 +1,4 @@
 #include "main.h"
-/**
- * print_decimal - Prints a decimal integer.
- * @num: The decimal integer to be printed.
- * @buffer: The buffer to store the decimal integer.
- * @count: The pointer to the count of characters printed.
- *
- * Return: The number of characters printed.
- */
-int print_decimal(int num, char *buffer, int *count)
-{
-	return sprintf(buffer + *count, "%d", num);
-}
 
 /**
  * print_unsigned_decimal - Prints an unsigned decimal integer.
