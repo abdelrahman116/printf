@@ -7,11 +7,15 @@
  */
 int _printf(const char *format, ...)
 {
-	int count = 0;
-    va_list args;
-	va_start(args, format);
+	va_list args;
 
-    while (*format != '\0')
+
+	int count = 0;
+	char buffer[BUFFER_SIZE];
+	int buffer_count = 0;
+    va_start(args, format);
+
+	while (*format != '\0')
 	{
 		if (*format == '%')
 		{
@@ -22,15 +26,19 @@ int _printf(const char *format, ...)
 				case 'c':
 				{
 					int ch = va_arg(args, int);
-					putchar(ch);
+					buffer[buffer_count] = ch;
+					buffer_count++;
 					count++;
 					break;
 				}
 
 				case 's':
 				{
-					const char *str = va_arg(args, const char*);
-					count += fputs(str, stdout);
+					const char *str = va_arg(args, const char *);
+					int len = strlen(str);
+					memcpy(buffer + buffer_count, str, len);
+					buffer_count += len;
+					count += len;
 					break;
 				}
 
@@ -38,28 +46,51 @@ int _printf(const char *format, ...)
 				case 'i':
 				{
 					int num = va_arg(args, int);
-					count += print_decimal(num);
+					count += print_decimal(num, buffer, &buffer_count);
 					break;
 				}
 
 				case 'u':
 				{
 					unsigned int num = va_arg(args, unsigned int);
-					count += print_unsigned_decimal(num);
+					count += print_unsigned_decimal(num, buffer, &buffer_count);
 					break;
 				}
 
 				case 'o':
 				{
 					unsigned int num = va_arg(args, unsigned int);
-					count += print_octal(num);
+					count += print_octal(num, buffer, &buffer_count);
 					break;
 				}
 
 				case 'x':
 				{
 					unsigned int num = va_arg(args, unsigned int);
-					count += print_hexadecimal(num, 0);
+					count += print_hexadecimal(num, buffer, &buffer_count, 0);
+					break;
+				}
+
+				case 'X':
+				{
+					unsigned int num = va_arg(args, unsigned int);
+					count += print_hexadecimal(num, buffer, &buffer_count, 1);
+					break;
+				}
+
+				case 'b':
+				{
+					unsigned int num = va_arg(args, unsigned int);
+					print_binary(num, buffer, &buffer_count);
+					count += sizeof(num) * 8;
+					break;
+				}
+
+				case '%':
+				{
+					buffer[buffer_count] = '%';
+					buffer_count++;
+					count++;
 					break;
 				}
 
@@ -68,11 +99,23 @@ int _printf(const char *format, ...)
 			}
 		}
 		else
-			putchar(*format);
+		{
+			buffer[buffer_count] = *format;
+			buffer_count++;
+			count++;
+		}
 
-		count++;
+		if (buffer_count >= BUFFER_SIZE - 1)
+		{
+			write(1, buffer, buffer_count);
+			buffer_count = 0;
+		}
+
 		format++;
 	}
+
+	if (buffer_count > 0)
+		write(1, buffer, buffer_count);
 
 	va_end(args);
 

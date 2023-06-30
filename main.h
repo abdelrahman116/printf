@@ -1,15 +1,14 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef MATH_H
+#define MAYH_H
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdarg.h>
-int _putchar(char c);
-void print_binary(unsigned int num);
-int print_decimal(int num);
-int print_unsigned_decimal(unsigned int num);
-int print_octal(unsigned int num);
-int print_hexadecimal(unsigned int num, int uppercase);
+#define BUFFER_SIZE 1024
+int print_decimal(int num, char *buffer, int *count);
+int print_unsigned_decimal(unsigned int num, char *buffer, int *count);
 int _printf(const char * const format, ...);
+int print_octal(unsigned int num, char *buffer, int *count);
+int print_hexadecimal(unsigned int num, char *buffer, int *count, int uppercase);
+void print_binary(unsigned int num, char *buffer, int *count);
 #endif
