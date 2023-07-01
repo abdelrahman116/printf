@@ -1,7 +1,6 @@
 #ifndef MATH_H
 #define MAYH_H
 #include <stdio.h>
-#include "functions.c"
 #include <limits.h>
 #include <stdarg.h>
 #include <string.h>
